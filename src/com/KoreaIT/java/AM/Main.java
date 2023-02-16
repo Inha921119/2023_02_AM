@@ -92,7 +92,7 @@ public class Main {
 
 		sc.close();
 	}
-}
+} 
 
 class Article {
 	int id;
