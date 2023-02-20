@@ -66,15 +66,7 @@ public class App {
 
 				int id = Integer.parseInt(cmdBits[2]);
 
-				Article foundArticle = null;
-
-				for (int i = 0; i < articles.size(); i++) {
-					Article article = articles.get(i);
-					if (article.id == id) {
-						foundArticle = article;
-						break;
-					}
-				}
+				Article foundArticle = getArticleById(id);
 
 				if (foundArticle == null) {
 					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
@@ -95,15 +87,7 @@ public class App {
 
 				int id = Integer.parseInt(cmdBits[2]);
 
-				Article foundArticle = null;
-
-				for (int i = 0; i < articles.size(); i++) {
-					Article article = articles.get(i);
-					if (article.id == id) {
-						foundArticle = article;
-						break;
-					}
-				}
+				Article foundArticle = getArticleById(id);
 
 				if (foundArticle == null) {
 					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
@@ -126,15 +110,7 @@ public class App {
 
 				int id = Integer.parseInt(cmdBits[2]);
 
-				int foundIndex = -1;
-
-				for (int i = 0; i < articles.size(); i++) {
-					Article article = articles.get(i);
-					if (article.id == id) {
-						foundIndex = i;
-						break;
-					}
-				}
+				int foundIndex = getArticleIndexById(id);
 
 				if (foundIndex == -1) {
 					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
@@ -157,10 +133,36 @@ public class App {
 
 	}
 
+	private int getArticleIndexById(int id) {
+		int i = 0;
+		for (Article article : articles) {
+			if (article.id == id) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
+	}
+
+	public Article getArticleById(int id) {
+		
+//		for (Article article : articles) {
+//			if (article.id == id) {
+//				return article;
+//			}
+//		}
+		
+		int index = getArticleIndexById(id);
+		if (index != -1 ) {
+			return articles.get(index);
+		}
+		return null;
+	}
 	public static void makeTestData() {
 		System.out.println("테스트를 위한 데이터를 생성합니다");
 		articles.add(new Article(1, Util.getNowDateTimeStr(), "제목1", "내용1", 11));
 		articles.add(new Article(2, Util.getNowDateTimeStr(), "제목2", "내용2", 22));
 		articles.add(new Article(3, Util.getNowDateTimeStr(), "제목3", "내용3", 33));
 	}
+
 }
