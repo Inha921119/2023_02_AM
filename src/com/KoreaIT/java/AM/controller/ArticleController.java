@@ -6,19 +6,26 @@ import java.util.Scanner;
 import com.KoreaIT.java.AM.Util.Util;
 import com.KoreaIT.java.AM.dto.Article;
 
-public class ArticleController {
+public class ArticleController extends Controller {
 	
 	private static int lastArticleId = 3;
 	private List<Article> articles;
 	private Scanner sc;
+	private String command;
+	private String actionMethodName;
 	
 	public ArticleController(List<Article> articles, Scanner sc) {
 		this.articles = articles;
 		this.sc = sc;
 	}
+	
+	public void doAction(String command, String actionMethodName) {
+		this.command = command;
+		this.actionMethodName = actionMethodName;
+	}
 		
 	
-	public void showList(String command) {
+	public void showList() {
 		if (lastArticleId == 0) {
 			System.out.println("게시글이 없습니다.");
 			return;
@@ -30,7 +37,7 @@ public class ArticleController {
 					article.regDate.substring(0, 10), article.writer, article.hit);
 		}
 	}
-	public void doWrite(String command) {
+	public void doWrite() {
 		int id = lastArticleId + 1;
 		lastArticleId = id;
 		System.out.printf("제목 : ");
@@ -50,7 +57,7 @@ public class ArticleController {
 		System.out.printf("%d번 글이 생성되었습니다.\n", id);
 	}
 	
-	public void showDetail (String command) {
+	public void showDetail () {
 		if (command.split(" ").length == 2) {
 			System.out.println("detail 뒤에 번호를 입력해주세요");
 			return;

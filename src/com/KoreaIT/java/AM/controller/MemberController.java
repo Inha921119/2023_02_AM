@@ -6,22 +6,34 @@ import java.util.Scanner;
 import com.KoreaIT.java.AM.Util.Util;
 import com.KoreaIT.java.AM.dto.Member;
 
-public class MemberController {
+public class MemberController extends Controller {
 	
 	private List<Member> members;
 	private Scanner sc;
 	public static Member foundMember = null;
 	private static boolean logincheck = false;
+	private String command;
+	private String actionMethodName;
 	
 	public MemberController(List<Member> members, Scanner sc) {
 		this.members = members;
 		this.sc = sc;
 	}
+	int lastMemberId = 0;
+	
+	public void doAction(String command, String actionMethodName) {
+		this.command = command;
+		this.actionMethodName = actionMethodName;
+
+		switch (actionMethodName) {
+		case "join":
+			doJoin();
+			break;
+		}
+	}
+
 	
 	public void doJoin() {
-
-		int lastMemberId = 0;
-
 		int id = lastMemberId + 1;
 		String regDate = Util.getNowDateTimeStr();
 		String loginId = null;
@@ -82,9 +94,7 @@ public class MemberController {
 			
 			if (foundMember == null) {
 				System.out.printf("로그인에 실패하였습니다.\n아이디나 비밀번호를 확인해주세요\n");
-				return;
 			}
-			return;
 		} else {
 			System.out.printf("현재 접속중입니다.\n다시 로그인을 원하시면 로그아웃을 해주세요\n");
 		}

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.KoreaIT.java.AM.controller.ArticleController;
+import com.KoreaIT.java.AM.controller.Controller;
 import com.KoreaIT.java.AM.controller.MemberController;
 import com.KoreaIT.java.AM.dto.Article;
 import com.KoreaIT.java.AM.dto.Member;
@@ -26,6 +27,8 @@ public class App {
 
 		MemberController memberController = new MemberController(members, sc);
 		ArticleController articleController = new ArticleController(articles, sc);
+		
+		Controller controller;
 
 		articleController.makeTestData();
 		
@@ -41,53 +44,75 @@ public class App {
 			if (command.equals("exit")) {
 				break;
 			}
-
-			if (command.equals("member join")) {
-
-				memberController.doJoin();
-
-			}
-
-			if (command.equals("login")) {
-				
-				memberController.doLogin();
-				
-			}
-
-			if (command.equals("logout")) {
-				
-				memberController.doLogout();
-				
-			}
-
-			if (MemberController.foundMember == null) {
-				System.out.println("로그인을 해주세요");
+			
+			String[] cmdBits = command.split(" ");
+			String controllerName = cmdBits[0];
+			
+			if(cmdBits.length == 1) {
+				System.out.println("명령어를 확인해주세요");
 				continue;
 			}
-
-			if (command.equals("article list")) {
-
-				articleController.showList(command);
-				
-			} else if (command.equals("article write")) {
-				
-				articleController.doWrite(command);
-
-			} else if (command.startsWith("article detail")) {
-				
-				articleController.showDetail(command);
-
-			} else if (command.startsWith("article delete")) {
-				
-				articleController.doDelete(command);
-
-			} else if (command.startsWith("article modify")) {
-				
-				articleController.doModify(command);
-
-			} else {
-				System.out.println("존재하지 않는 명령어 입니다.");
+			
+			String actionMethodName = cmdBits[1];
+			controller = null;
+			
+			if (controllerName.equals("article")) {
+				controller = articleController;
+			} else if (controllerName.equals("member")) {
+				controller = memberController;
 			}
+			else {
+				System.out.println("존재하지 않는 명령어 입니다.");
+				continue;
+			}
+			
+			controller.doAction(command, actionMethodName);
+
+//			if (command.equals("member join")) {
+//
+//				memberController.doJoin();
+//
+//			}
+//
+//			if (command.equals("login")) {
+//				
+//				memberController.doLogin();
+//				
+//			}
+//
+//			if (command.equals("logout")) {
+//				
+//				memberController.doLogout();
+//				
+//			}
+//
+//			if (MemberController.foundMember == null) {
+//				System.out.println("로그인을 해주세요");
+//				continue;
+//			}
+//
+//			if (command.equals("article list")) {
+//
+//				articleController.showList(command);
+//				
+//			} else if (command.equals("article write")) {
+//				
+//				articleController.doWrite(command);
+//
+//			} else if (command.startsWith("article detail")) {
+//				
+//				articleController.showDetail(command);
+//
+//			} else if (command.startsWith("article delete")) {
+//				
+//				articleController.doDelete(command);
+//
+//			} else if (command.startsWith("article modify")) {
+//				
+//				articleController.doModify(command);
+//
+//			} else {
+//			}
 		}
 		System.out.println("== 프로그램 끝 ==");
 
