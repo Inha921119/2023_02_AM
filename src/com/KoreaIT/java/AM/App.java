@@ -44,85 +44,44 @@ public class App {
 
 			if (command.equals("member join")) {
 				int id = lastMemberId + 1;
-				lastMemberId = id;
-				String loginId;
+				String regDate = Util.getNowDateTimeStr();
+				String loginId = null;
+
 				while (true) {
-					boolean idCheck = true;
-					System.out.printf("아이디 : ");
-					loginId = sc.nextLine().trim();
-					for (int i = 0; i < members.size(); i++) {
-						Member member = members.get(i);
-						if (loginId.equals(member.loginId)) {
-							System.out.println("중복된 아이디입니다. 다시 입력해주세요");
-							idCheck = false;
-							break;
-						}
-					}
-					if (loginId.equals("")) {
-						System.out.println("필수 정보입니다.");
+
+					System.out.printf("로그인 아이디 : ");
+					loginId = sc.nextLine();
+
+					if (isJoinableLoginId(loginId) == false) {
+						System.out.println("이미 사용중인 아이디입니다");
 						continue;
 					}
-					if (idCheck) {
-						break;
-					}
-				}
-				String loginPW;
-				String loginPWCheck;
-				while (true) {
-					System.out.printf("비밀번호 : ");
-					loginPW = sc.nextLine().trim();
-					if (loginPW.equals("")) {
-						System.out.println("필수 정보입니다.");
-						continue;
-					}
-					System.out.printf("비밀번호 확인 : ");
-					loginPWCheck = sc.nextLine().trim();
-					if (loginPW.equals(loginPWCheck)) {
-						System.out.println("비밀번호와 비밀번호 확인이 일치합니다.");
-						break;
-					} else {
-						System.out.println("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-						continue;
-					}
+
+					break;
 				}
 
-				String name;
+				String loginPw = null;
+				String loginPwConfirm = null;
 				while (true) {
-					System.out.printf("이름 : ");
-					name = sc.nextLine().trim();
-					if (name.equals("")) {
-						System.out.println("필수 정보입니다.");
+					System.out.printf("로그인 비밀번호 : ");
+					loginPw = sc.nextLine();
+					System.out.printf("로그인 비밀번호 재확인: ");
+					loginPwConfirm = sc.nextLine();
+
+					if (loginPw.equals(loginPwConfirm) == false) {
+						System.out.println("비밀번호를 다시 입력해주세요");
 						continue;
 					}
 					break;
 				}
+				System.out.printf("이름 : ");
+				String name = sc.nextLine();
 
-				String callnumber;
-				while (true) {
-					boolean callnumberCheck = true;
-					System.out.printf("전화번호 : ");
-					callnumber = sc.nextLine().trim();
-					for (int i = 0; i < members.size(); i++) {
-						Member member = members.get(i);
-						if (callnumber.equals(member.callnumber)) {
-							System.out.println("중복된 전화번호입니다. 다시 입력해주세요");
-							callnumberCheck = false;
-							break;
-						}
-					}
-					if (callnumberCheck) {
-						break;
-					}
-				}
-
-				String SignUpDate = Util.getNowDateTimeStr();
-
-				Member member = new Member(id, SignUpDate, loginId, loginPW, name, callnumber);
-
+				Member member = new Member(id, regDate, loginId, loginPw, name);
 				members.add(member);
 
-				System.out.println("계정 생성이 완료되었습니다.");
-				continue;
+				System.out.println(id + "번 회원이 가입되었습니다");
+				lastMemberId++;
 			}
 
 			if (command.equals("login")) {
@@ -135,7 +94,7 @@ public class App {
 
 					for (int i = 0; i < members.size(); i++) {
 						Member member = members.get(i);
-						if (id.equals(member.loginId) && passwords.equals(member.loginPW)) {
+						if (id.equals(member.loginId) && passwords.equals(member.loginPw)) {
 							foundMember = member;
 							logincheck = true;
 							System.out.println("로그인 되었습니다");
@@ -201,7 +160,7 @@ public class App {
 					continue;
 				} else if (command.split(" ")[2].matches("[^0-9]+")) {
 					System.out.println("detail 뒤에 숫자만 입력해주세요");
-					continue;
+					continue; 
 				}
 
 				String cmdBits = command.split(" ")[2];
@@ -315,6 +274,27 @@ public class App {
 		System.out.println("== 프로그램 끝 ==");
 
 		sc.close();
+	}
+
+	private boolean isJoinableLoginId(String loginId) {
+		int index = getMemberIndexByLoginId(loginId);
+
+		if (index == -1) {
+			return true;
+		}
+
+		return false;
+	}
+	
+	private int getMemberIndexByLoginId(String loginId) {
+		int i = 0;
+		for (Member member : members) {
+			if (member.loginId.equals(loginId)) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
 	}
 
 	private int getArticleIndexById(int id) {

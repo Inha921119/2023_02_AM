@@ -1,19 +1,16 @@
 package com.KoreaIT.java.AM.dto;
 
-public class Member {
-	public int id;
-	public String signupdate;
+public class Member extends Dto {
 	public String loginId;
-	public String loginPW;
+	public String loginPw;
 	public String name;
-	public String callnumber;
 
-	public Member(int id, String signupdate, String loginId, String loginPW, String name, String callnumber) {
+	public Member(int id, String regDate, String loginId, String loginPw, String name) {
 		this.id = id;
-		this.signupdate = signupdate;
+		this.regDate = regDate;
 		this.loginId = loginId;
-		this.loginPW = loginPW;
+		this.loginPw = loginPw;
 		this.name = name;
-		this.callnumber = callnumber;
 	}
+
 }

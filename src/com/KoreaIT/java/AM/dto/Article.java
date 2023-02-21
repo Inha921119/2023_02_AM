@@ -1,13 +1,11 @@
 package com.KoreaIT.java.AM.dto;
 
-public class Article {
-	public int id;
-	public String regDate;
+public class Article extends Dto {
 	public String title;
 	public String body;
 	public int hit;
-	public String LastModifyDate;
 	public String writer;
+	public String LastModifyDate;
 
 	public Article(int id, String regDate, String title, String body) {
 		this(id, regDate, title, body, 0);
@@ -24,4 +22,5 @@ public class Article {
 	public void increaseHit() {
 		this.hit++;
 	}
+
 }
