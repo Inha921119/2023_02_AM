@@ -11,10 +11,10 @@ public class MemberController extends Controller {
 	private List<Member> members;
 	private Scanner sc;
 	public static Member foundMember = null;
-	private static boolean logincheck = false;
+	public static boolean logincheck = false;
 	private String command;
 	private String actionMethodName;
-	
+
 	public MemberController(List<Member> members, Scanner sc) {
 		this.members = members;
 		this.sc = sc;
@@ -24,10 +24,19 @@ public class MemberController extends Controller {
 	public void doAction(String command, String actionMethodName) {
 		this.command = command;
 		this.actionMethodName = actionMethodName;
-
+				
 		switch (actionMethodName) {
 		case "join":
 			doJoin();
+			break;
+		case "login":
+			doLogin();
+			break;
+		case "logout":
+			doLogout();
+			break;
+		default:
+			System.out.println("존재하지 않는 명령어 입니다.");;
 			break;
 		}
 	}
@@ -75,7 +84,7 @@ public class MemberController extends Controller {
 		lastMemberId++;
 	}
 	
-	public void doLogin( ) {
+	public void doLogin() {
 		if (logincheck == false) {
 			System.out.printf("아이디 : ");
 			String id = sc.nextLine();

@@ -8,7 +8,6 @@ import com.KoreaIT.java.AM.dto.Article;
 
 public class ArticleController extends Controller {
 	
-	private static int lastArticleId = 3;
 	private List<Article> articles;
 	private Scanner sc;
 	private String command;
@@ -19,27 +18,48 @@ public class ArticleController extends Controller {
 		this.sc = sc;
 	}
 	
+	int lastArticleId = 3;
+	
 	public void doAction(String command, String actionMethodName) {
 		this.command = command;
 		this.actionMethodName = actionMethodName;
+
+		switch (actionMethodName) {
+		case "list":
+			showList();
+			break;
+		case "write":
+			doWrite();
+			break;
+		case "detail":
+			showDetail();
+			break;
+		case "modify":
+			doModify();
+			break;
+		case "delete":
+			doDelete();
+			break;
+		default:
+			System.out.println("존재하지 않는 명령어 입니다.");;
+			break;
+		}
 	}
 		
-	
 	public void showList() {
-		if (lastArticleId == 0) {
-			System.out.println("게시글이 없습니다.");
-			return;
-		}
-		System.out.println("|번호	|제목		|날짜		|작성자		|조회수		");
-		for (int i = articles.size() - 1; i >= 0; i--) {
-			Article article = articles.get(i);
-			System.out.printf("|%d	|%s		|%s	|%s		|%d		\n", article.id, article.title,
-					article.regDate.substring(0, 10), article.writer, article.hit);
+		if (articles.size() == 0) {
+			System.out.println("게시글이 없습니다");
+		} else {
+			System.out.println("|번호	|제목		|날짜		|작성자		|조회수		");
+			for (int i = articles.size() - 1; i >= 0; i--) {
+				Article article = articles.get(i);
+				System.out.printf("|%d	|%s		|%s	|%s		|%d		\n", article.id, article.title,
+						article.regDate.substring(0, 10), article.writer, article.hit);
+			}
 		}
 	}
 	public void doWrite() {
 		int id = lastArticleId + 1;
-		lastArticleId = id;
 		System.out.printf("제목 : ");
 		String title = sc.nextLine();
 
@@ -55,6 +75,7 @@ public class ArticleController extends Controller {
 		articles.add(article);
 
 		System.out.printf("%d번 글이 생성되었습니다.\n", id);
+		lastArticleId++;
 	}
 	
 	public void showDetail () {
@@ -90,7 +111,7 @@ public class ArticleController extends Controller {
 		System.out.printf("내용 : %s\n", foundArticle.body);
 
 	}
-	public void doDelete (String command) {
+	public void doDelete () {
 		if (command.split(" ").length == 2) {
 			System.out.println("delete 뒤에 번호를 입력해주세요");
 			return;
@@ -116,7 +137,7 @@ public class ArticleController extends Controller {
 		}
 	}
 	
-	public void doModify (String command) {
+	public void doModify () {
 		if (command.split(" ").length == 2) {
 			System.out.println("modify 뒤에 번호를 입력해주세요");
 			return;

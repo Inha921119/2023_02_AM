@@ -4,7 +4,7 @@ public class Article extends Dto {
 	public String title;
 	public String body;
 	public int hit;
-	public String writer;
+	public String writer = null;
 	public String LastModifyDate;
 
 	public Article(int id, String regDate, String title, String body) {
