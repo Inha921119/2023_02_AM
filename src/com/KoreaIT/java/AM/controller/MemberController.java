@@ -7,14 +7,13 @@ import java.util.Scanner;
 import com.KoreaIT.java.AM.Util.Util;
 import com.KoreaIT.java.AM.dto.Member;
 
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
 
 public class MemberController extends Controller {
 
 	private List<Member> members;
 	private Scanner sc;
-	public static Member foundMember = null;
-	public static boolean logincheck = false;
+	public static Member loginedMember = null;
 	private String command;
 	public String actionMethodName;
 
@@ -39,9 +38,12 @@ public class MemberController extends Controller {
 		case "logout":
 			doLogout();
 			break;
+		case "profile":
+			showProfile();
+			break;
 		default:
 			System.out.println("존재하지 않는 명령어 입니다.");
-			;
+			System.out.println("도움이 필요하시면 'help'를 입력하세요");
 			break;
 		}
 	}
@@ -89,48 +91,72 @@ public class MemberController extends Controller {
 	}
 
 	private void doLogin() {
-		if (logincheck == false) {
+		if (loginedMember != null) {
+			System.out.printf("현재 접속중입니다.\n다시 로그인을 원하시면 로그아웃을 해주세요\n");
+			return;
+		}
+		while (true) {
 			System.out.printf("아이디 : ");
 			String loginId = sc.nextLine();
-
+			
 			System.out.printf("비밀번호 : ");
 			String loginPw = sc.nextLine();
-
+			
 			Member member = getMemberByLoginId(loginId);
-
+			
 			if (member == null) {
 				System.out.println("해당 회원은 존재하지 않습니다");
-				return;
+				continue;
 			}
-
+			
 			if (member.loginPw.equals(loginPw) == false) {
 				System.out.println("비밀번호를 확인해주세요");
-				return;
+				continue;
 			}
-
-			if (loginId.equals(member.loginId) && loginPw.equals(member.loginPw)) {
-				foundMember = member;
-				logincheck = true;
-				System.out.println("로그인 되었습니다");
-				return;
-			}
-
-		} else {
-			System.out.printf("현재 접속중입니다.\n다시 로그인을 원하시면 로그아웃을 해주세요\n");
+			
+			loginedMember = member;
+			loginedMember.lastLoginDate = Util.getNowDateTimeStr();
+			System.out.println("로그인 되었습니다");
+			break;
 		}
+		return;
 	}
 
 	private void doLogout() {
-		foundMember = null;
-		logincheck = false;
+		if (loginedMember == null) {
+			System.out.printf("로그인 후 사용가능합니다\n");
+			return;
+		}
+		loginedMember = null;
 		System.out.println("로그아웃 되었습니다");
 	}
 
-//	public static void getLoginCheck() {
-//		if (logincheck == false) {
-//			System.out.println("로그인 후 이용해주세요");
-//		}
-//	}
+	private void showProfile() {
+		if (loginedMember == null) {
+			System.out.printf("로그인 후 사용가능합니다\n");
+			return;
+		}
+
+		String searchKeyword = command.substring("member profile".length()).trim();
+
+		if (searchKeyword.length() > 0) {
+			for (Member member : members) {
+				if (searchKeyword.equals(member.loginId)) {
+					System.out.printf("%s의 프로필\n", member.loginId);
+					System.out.printf("아이디 : %s\n", member.loginId);
+					System.out.printf("이름 : %s\n", member.name);
+					System.out.printf("가입날짜 : %s\n", member.regDate.substring(0, 10));
+					System.out.printf("마지막 접속날짜 : %s\n", member.lastLoginDate.substring(0, 10));
+				}
+			}
+		} else {
+			System.out.printf("아이디 : %s\n", loginedMember.loginId);
+			System.out.printf("이름 : %s\n", loginedMember.name);
+			System.out.printf("가입날짜 : %s\n", loginedMember.regDate.substring(0, 10));
+			System.out.printf("마지막 접속날짜 : %s\n", loginedMember.lastLoginDate.substring(0, 10));
+		}
+		return;
+	}
 
 	private Member getMemberByLoginId(String loginId) {
 		int index = getMemberIndexByLoginId(loginId);

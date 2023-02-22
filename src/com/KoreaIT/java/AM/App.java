@@ -2,6 +2,7 @@ package com.KoreaIT.java.AM;
 
 import java.util.Scanner;
 
+import com.KoreaIT.java.AM.Util.Util;
 import com.KoreaIT.java.AM.controller.ArticleController;
 import com.KoreaIT.java.AM.controller.Controller;
 import com.KoreaIT.java.AM.controller.MemberController;
@@ -27,17 +28,27 @@ public class App {
 
 			if (command.length() == 0) {
 				System.out.println("명령어를 입력해 주세요.");
+				System.out.println("도움이 필요하시면 'help'를 입력하세요");
 				continue;
 			}
+			
+			if (command.equals("help")) {
+				Util.CommandHelp();
+				continue;
+			}
+			
 			if (command.equals("exit")) {
 				break;
 			}
+			
+			
 
 			String[] cmdBits = command.split(" ");
 			String controllerName = cmdBits[0];
 
 			if (cmdBits.length == 1) {
 				System.out.println("명령어를 확인해주세요");
+				System.out.println("도움이 필요하시면 'help'를 입력하세요");
 				continue;
 			}
 
@@ -45,7 +56,7 @@ public class App {
 			controller = null;
 
 			if (controllerName.equals("article")) {
-				if (MemberController.logincheck == false) {
+				if (MemberController.loginedMember == null) {
 					System.out.println("로그인 후 이용해주세요");
 					continue;
 				} else {
@@ -55,6 +66,7 @@ public class App {
 				controller = memberController;
 			} else {
 				System.out.println("존재하지 않는 명령어 입니다.");
+				System.out.println("도움이 필요하시면 'help'를 입력하세요");
 				continue;
 			}
 

@@ -4,6 +4,7 @@ public class Member extends Dto {
 	public String loginId = null;
 	public String loginPw = null;
 	public String name = null;
+	public String lastLoginDate = "접속기록이 없습니다";
 
 	public Member(int id, String regDate, String loginId, String loginPw, String name) {
 		this.id = id;
