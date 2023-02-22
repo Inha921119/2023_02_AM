@@ -86,6 +86,7 @@ public class ArticleController extends Controller {
 	}
 	private void doWrite() {
 		int id = lastArticleId + 1;
+		String writer = MemberController.loginedMember.loginId;
 		System.out.printf("제목 : ");
 		String title = sc.nextLine();
 
@@ -93,10 +94,7 @@ public class ArticleController extends Controller {
 		String body = sc.nextLine();
 
 		String regDate = Util.getNowDateTimeStr();
-
-		Article article = new Article(id, regDate, title, body);
-
-		article.writer = MemberController.loginedMember.loginId;
+		Article article = new Article(id, regDate, writer, title, body);
 
 		articles.add(article);
 
@@ -105,16 +103,17 @@ public class ArticleController extends Controller {
 	}
 	
 	private void showDetail () {
-		if (command.split(" ").length == 2) {
+		String[] cmdBits = command.split(" ");
+		
+		if (cmdBits.length == 2) {
 			System.out.println("detail 뒤에 번호를 입력해주세요");
 			return;
 		} else if (command.split(" ")[2].matches("[^0-9]+")) {
 			System.out.println("detail 뒤에 숫자만 입력해주세요");
 			return;
 		}
-
-		String cmdBits = command.split(" ")[2];
-		int id = Integer.parseInt(cmdBits);
+		
+		int id = Integer.parseInt(cmdBits[2]);
 
 		Article foundArticle = getArticleById(id);
 
@@ -138,7 +137,8 @@ public class ArticleController extends Controller {
 
 	}
 	private void doDelete () {
-		if (command.split(" ").length == 2) {
+		String[] cmdBits = command.split(" ");
+		if (cmdBits.length == 2) {
 			System.out.println("delete 뒤에 번호를 입력해주세요");
 			return;
 		} else if (command.split(" ")[2].matches("[^0-9]+")) {
@@ -146,8 +146,7 @@ public class ArticleController extends Controller {
 			return;
 		}
 
-		String cmdBits = command.split(" ")[2];
-		int id = Integer.parseInt(cmdBits);
+		int id = Integer.parseInt(cmdBits[2]);
 
 		int foundIndex = getArticleIndexById(id);
 
@@ -164,7 +163,8 @@ public class ArticleController extends Controller {
 	}
 	
 	private void doModify () {
-		if (command.split(" ").length == 2) {
+		String[] cmdBits = command.split(" ");
+		if (cmdBits.length == 2) {
 			System.out.println("modify 뒤에 번호를 입력해주세요");
 			return;
 		} else if (command.split(" ")[2].matches("[^0-9]+")) {
@@ -172,8 +172,7 @@ public class ArticleController extends Controller {
 			return;
 		}
 
-		String cmdBits = command.split(" ")[2];
-		int id = Integer.parseInt(cmdBits);
+		int id = Integer.parseInt(cmdBits[2]);
 
 		Article foundArticle = getArticleById(id);
 
@@ -243,8 +242,8 @@ public class ArticleController extends Controller {
 
 	public void makeTestData() {
 		System.out.println("테스트를 위한 게시물을 생성합니다");
-		articles.add(new Article(1, Util.getNowDateTimeStr(), "제목1", "내용1", 11));
-		articles.add(new Article(2, Util.getNowDateTimeStr(), "제목2", "내용2", 22));
-		articles.add(new Article(3, Util.getNowDateTimeStr(), "제목3", "내용3", 33));
+		articles.add(new Article(1, Util.getNowDateTimeStr(), "admin1","제목1", "내용1", 11));
+		articles.add(new Article(2, Util.getNowDateTimeStr(), "admin2","제목2", "내용2", 22));
+		articles.add(new Article(3, Util.getNowDateTimeStr(), "admin3","제목3", "내용3", 33));
 	}
 	}
