@@ -1,5 +1,6 @@
 package com.KoreaIT.java.AM.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,10 +14,10 @@ public class MemberController extends Controller {
 	public static Member foundMember = null;
 	public static boolean logincheck = false;
 	private String command;
-	private String actionMethodName;
+	public String actionMethodName;
 
-	public MemberController(List<Member> members, Scanner sc) {
-		this.members = members;
+	public MemberController(Scanner sc) {
+		this.members = new ArrayList<>();
 		this.sc = sc;
 	}
 	int lastMemberId = 0;
@@ -42,7 +43,7 @@ public class MemberController extends Controller {
 	}
 
 	
-	public void doJoin() {
+	private void doJoin() {
 		int id = lastMemberId + 1;
 		String regDate = Util.getNowDateTimeStr();
 		String loginId = null;
@@ -84,7 +85,7 @@ public class MemberController extends Controller {
 		lastMemberId++;
 	}
 	
-	public void doLogin() {
+	private void doLogin() {
 		if (logincheck == false) {
 			System.out.printf("아이디 : ");
 			String id = sc.nextLine();
@@ -109,7 +110,7 @@ public class MemberController extends Controller {
 		}
 	}
 	
-	public void doLogout () {
+	private void doLogout () {
 		foundMember = null;
 		logincheck = false;
 		System.out.println("로그아웃 되었습니다");

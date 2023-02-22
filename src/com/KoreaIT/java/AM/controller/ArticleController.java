@@ -1,5 +1,6 @@
 package com.KoreaIT.java.AM.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,10 +12,10 @@ public class ArticleController extends Controller {
 	private List<Article> articles;
 	private Scanner sc;
 	private String command;
-	private String actionMethodName;
+	public String actionMethodName;
 	
-	public ArticleController(List<Article> articles, Scanner sc) {
-		this.articles = articles;
+	public ArticleController(Scanner sc) {
+		this.articles = new ArrayList<>();
 		this.sc = sc;
 	}
 	
@@ -46,7 +47,7 @@ public class ArticleController extends Controller {
 		}
 	}
 		
-	public void showList() {
+	private void showList() {
 		if (articles.size() == 0) {
 			System.out.println("게시글이 없습니다");
 		} else {
@@ -58,7 +59,7 @@ public class ArticleController extends Controller {
 			}
 		}
 	}
-	public void doWrite() {
+	private void doWrite() {
 		int id = lastArticleId + 1;
 		System.out.printf("제목 : ");
 		String title = sc.nextLine();
@@ -78,7 +79,7 @@ public class ArticleController extends Controller {
 		lastArticleId++;
 	}
 	
-	public void showDetail () {
+	private void showDetail () {
 		if (command.split(" ").length == 2) {
 			System.out.println("detail 뒤에 번호를 입력해주세요");
 			return;
@@ -111,7 +112,7 @@ public class ArticleController extends Controller {
 		System.out.printf("내용 : %s\n", foundArticle.body);
 
 	}
-	public void doDelete () {
+	private void doDelete () {
 		if (command.split(" ").length == 2) {
 			System.out.println("delete 뒤에 번호를 입력해주세요");
 			return;
@@ -137,7 +138,7 @@ public class ArticleController extends Controller {
 		}
 	}
 	
-	public void doModify () {
+	private void doModify () {
 		if (command.split(" ").length == 2) {
 			System.out.println("modify 뒤에 번호를 입력해주세요");
 			return;
@@ -207,7 +208,7 @@ public class ArticleController extends Controller {
 		return -1;
 	}
 
-	public Article getArticleById(int id) {
+	private Article getArticleById(int id) {
 		int index = getArticleIndexById(id);
 		if (index != -1) {
 			return articles.get(index);
