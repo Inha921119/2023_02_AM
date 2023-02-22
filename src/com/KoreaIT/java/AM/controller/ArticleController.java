@@ -7,12 +7,14 @@ import java.util.Scanner;
 import com.KoreaIT.java.AM.Util.Util;
 import com.KoreaIT.java.AM.dto.Article;
 
+@SuppressWarnings("unused")
+
 public class ArticleController extends Controller {
 	
 	private List<Article> articles;
 	private Scanner sc;
 	private String command;
-	public String actionMethodName;
+	private String actionMethodName;
 	
 	public ArticleController(Scanner sc) {
 		this.articles = new ArrayList<>();
@@ -217,7 +219,7 @@ public class ArticleController extends Controller {
 	}
 
 	public void makeTestData() {
-		System.out.println("테스트를 위한 데이터를 생성합니다");
+		System.out.println("테스트를 위한 게시물을 생성합니다");
 		articles.add(new Article(1, Util.getNowDateTimeStr(), "제목1", "내용1", 11));
 		articles.add(new Article(2, Util.getNowDateTimeStr(), "제목2", "내용2", 22));
 		articles.add(new Article(3, Util.getNowDateTimeStr(), "제목3", "내용3", 33));

@@ -19,6 +19,7 @@ public class App {
 		Controller controller;
 
 		articleController.makeTestData();
+		memberController.makeTestData();
 
 		while (true) {
 			System.out.printf("명령어) ");
@@ -44,7 +45,12 @@ public class App {
 			controller = null;
 
 			if (controllerName.equals("article")) {
-				controller = articleController;
+				if (MemberController.logincheck == false) {
+					System.out.println("로그인 후 이용해주세요");
+					continue;
+				} else {
+					controller = articleController;
+				}
 			} else if (controllerName.equals("member")) {
 				controller = memberController;
 			} else {
@@ -54,5 +60,9 @@ public class App {
 
 			controller.doAction(command, actionMethodName);
 		}
+		
+		System.out.println("==프로그램 끝==");
+
+		sc.close();
 	}
 }
