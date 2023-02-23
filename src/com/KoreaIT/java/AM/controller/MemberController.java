@@ -91,7 +91,7 @@ public class MemberController extends Controller {
 	}
 
 	private void doLogin() {
-		if (loginedMember != null) {
+		if (isLogined()) {
 			System.out.printf("현재 접속중입니다.\n다시 로그인을 원하시면 로그아웃을 해주세요\n");
 			return;
 		}
@@ -123,7 +123,7 @@ public class MemberController extends Controller {
 	}
 
 	private void doLogout() {
-		if (loginedMember == null) {
+		if (isLogined() == false) {
 			System.out.printf("로그인 후 사용가능합니다\n");
 			return;
 		}
@@ -132,7 +132,7 @@ public class MemberController extends Controller {
 	}
 
 	private void showProfile() {
-		if (loginedMember == null) {
+		if (isLogined() == false) {
 			System.out.printf("로그인 후 사용가능합니다\n");
 			return;
 		}
@@ -157,7 +157,11 @@ public class MemberController extends Controller {
 		}
 		return;
 	}
-
+	
+	private boolean isLogined() {
+		return loginedMember != null;
+	}
+	
 	private Member getMemberByLoginId(String loginId) {
 		int index = getMemberIndexByLoginId(loginId);
 
