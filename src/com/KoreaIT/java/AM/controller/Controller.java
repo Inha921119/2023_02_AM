@@ -1,8 +1,13 @@
 package com.KoreaIT.java.AM.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.KoreaIT.java.AM.dto.Member;
 
 public abstract class Controller {
+
+	public static List<Member> members = new ArrayList<>();
 
 	public static Member loginedMember = null;
 
