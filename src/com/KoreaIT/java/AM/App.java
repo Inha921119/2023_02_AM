@@ -2,7 +2,6 @@ package com.KoreaIT.java.AM;
 
 import java.util.Scanner;
 
-import com.KoreaIT.java.AM.Util.Util;
 import com.KoreaIT.java.AM.controller.ArticleController;
 import com.KoreaIT.java.AM.controller.Controller;
 import com.KoreaIT.java.AM.controller.MemberController;
@@ -10,71 +9,60 @@ import com.KoreaIT.java.AM.controller.MemberController;
 public class App {
 
 	public void run() {
-		System.out.println("== 프로그램 시작 ==");
+		System.out.println("==프로그램 시작==");
 
 		Scanner sc = new Scanner(System.in);
 
 		MemberController memberController = new MemberController(sc);
 		ArticleController articleController = new ArticleController(sc);
 
-		Controller controller;
-
 		articleController.makeTestData();
 		memberController.makeTestData();
 
+		Controller controller;
+
 		while (true) {
-			System.out.printf("명령어) ");
+			System.out.printf("명령어 ) ");
 			String command = sc.nextLine().trim();
 
 			if (command.length() == 0) {
-				System.out.println("명령어를 입력해 주세요.");
-				System.out.println("도움이 필요하시면 'help'를 입력하세요");
+				System.out.println("명령어를 입력해주세요");
 				continue;
 			}
-			
-			if (command.equals("help")) {
-				Util.CommandHelp();
-				continue;
-			}
-			
-			if (command.equals("exit")) {
+
+			if (command.equals("system exit")) {
 				break;
 			}
-			
-			
 
 			String[] cmdBits = command.split(" ");
 			String controllerName = cmdBits[0];
 
 			if (cmdBits.length == 1) {
 				System.out.println("명령어를 확인해주세요");
-				System.out.println("도움이 필요하시면 'help'를 입력하세요");
 				continue;
 			}
 
 			String actionMethodName = cmdBits[1];
+
 			controller = null;
 
 			if (controllerName.equals("article")) {
-				if (MemberController.loginedMember == null) {
-					System.out.println("로그인 후 이용해주세요");
-					continue;
-				} else {
-					controller = articleController;
-				}
+				controller = articleController;
 			} else if (controllerName.equals("member")) {
 				controller = memberController;
 			} else {
-				System.out.println("존재하지 않는 명령어 입니다.");
-				System.out.println("도움이 필요하시면 'help'를 입력하세요");
+				System.out.println("존재하지 않는 명령어입니다");
 				continue;
 			}
 
 			controller.doAction(command, actionMethodName);
+
 		}
-		
+
 		System.out.println("==프로그램 끝==");
 
 		sc.close();
+
 	}
+
 }
